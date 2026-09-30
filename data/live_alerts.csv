@@ -1,0 +1,2 @@
+source_ip,query,query_type,risk_score,alert,detection_reasons
+10.0.0.10,m2a2qkttta0t966znt2d01nlqan3eujdvkh69lbj23gfy0nw1o2tmyq0.example.com.,TXT,6,DNS Tunneling Suspected,"Long domain, Multiple subdomains, High entropy, TXT query"

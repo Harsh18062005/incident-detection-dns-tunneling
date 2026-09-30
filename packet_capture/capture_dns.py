@@ -100,13 +100,50 @@ if not df.empty:
     # Generate alerts for suspicious live DNS traffic
     live_alerts = generate_alerts_from_dataframe(df)
 
+    # Save live alerts separately
+    live_alerts.to_csv(
+        "data/live_alerts.csv",
+        index=False
+    )
+
     print("\nLive DNS Alerts:")
 
     if not live_alerts.empty:
-        print(live_alerts.to_string(index=False))
+
+        print(
+            live_alerts.to_string(index=False)
+        )
+
+        print(
+            f"\nLive alerts saved: {len(live_alerts)}"
+        )
+
     else:
+
         print("No suspicious DNS alerts generated.")
+
+        print(
+            "Live alerts saved: 0"
+        )
 
 else:
 
+    # Create an empty live alerts file
+    empty_alerts = pd.DataFrame(
+        columns=[
+            "source_ip",
+            "query",
+            "query_type",
+            "risk_score",
+            "alert",
+            "detection_reasons"
+        ]
+    )
+
+    empty_alerts.to_csv(
+        "data/live_alerts.csv",
+        index=False
+    )
+
     print("No DNS queries captured.")
+    print("Live alerts saved: 0")

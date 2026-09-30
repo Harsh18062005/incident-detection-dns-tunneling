@@ -10,6 +10,19 @@ st.title("DNS Tunneling Detection Dashboard")
 dns_traffic = pd.read_csv("data/dns_traffic.csv")
 alerts = pd.read_csv("data/alerts.csv")
 
+# Load live alerts if available
+try:
+    live_alerts = pd.read_csv("data/live_alerts.csv")
+except FileNotFoundError:
+    live_alerts = pd.DataFrame()
+
+
+# ============================================================
+# SYNTHETIC DATASET SECTION
+# ============================================================
+
+st.header("Synthetic DNS Detection Results")
+
 
 # Calculate dashboard metrics
 total_queries = len(dns_traffic)
@@ -49,7 +62,7 @@ col4.metric(
 )
 
 
-# Display alerts
+# Display synthetic alerts
 st.subheader("Detected DNS Tunneling Alerts")
 
 if not alerts.empty:
@@ -81,3 +94,63 @@ if not alerts.empty:
     st.subheader("Suspicious Queries by Source IP")
 
     st.bar_chart(ip_counts)
+
+
+# ============================================================
+# LIVE DNS MONITORING SECTION
+# ============================================================
+
+st.divider()
+
+st.header("Live DNS Monitoring")
+
+if live_alerts.empty:
+
+    st.success(
+        "No suspicious DNS traffic detected in the latest live capture."
+    )
+
+    st.metric(
+        "Live DNS Alerts",
+        0
+    )
+
+else:
+
+    live_alert_count = len(live_alerts)
+    live_highest_risk = live_alerts["risk_score"].max()
+
+    col1, col2 = st.columns(2)
+
+    col1.metric(
+        "Live DNS Alerts",
+        live_alert_count
+    )
+
+    col2.metric(
+        "Highest Live Risk Score",
+        live_highest_risk
+    )
+
+    st.subheader("Live DNS Tunneling Alerts")
+
+    st.dataframe(
+        live_alerts[
+            [
+                "source_ip",
+                "query",
+                "query_type",
+                "risk_score",
+                "alert",
+                "detection_reasons"
+            ]
+        ],
+        use_container_width=True
+    )
+
+    # Count live alerts by source IP
+    live_ip_counts = live_alerts["source_ip"].value_counts()
+
+    st.subheader("Live Suspicious Queries by Source IP")
+
+    st.bar_chart(live_ip_counts)

@@ -46,7 +46,19 @@ def generate_alerts_from_dataframe(df):
 
             alerts.append(alert)
 
-    return pd.DataFrame(alerts)
+    # Always return the expected columns,
+    # even when there are no suspicious alerts.
+    return pd.DataFrame(
+        alerts,
+        columns=[
+            "source_ip",
+            "query",
+            "query_type",
+            "risk_score",
+            "alert",
+            "detection_reasons"
+        ]
+    )
 
 
 def generate_synthetic_alerts():
