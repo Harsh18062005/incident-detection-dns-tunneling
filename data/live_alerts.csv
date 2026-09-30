@@ -1,5 +1,1 @@
 source_ip,query,query_type,risk_score,alert,detection_reasons
-172.16.4.43,m2a2qkttta0t966znt2d01nlqan3eujdvkh69lbj23gfy0nw1o2tmyq0.example.com.ABES.,A,5,DNS Tunneling Suspected,"Long domain, Multiple subdomains, High entropy"
-172.16.4.43,m2a2qkttta0t966znt2d01nlqan3eujdvkh69lbj23gfy0nw1o2tmyq0.example.com.ABES.,AAAA,5,DNS Tunneling Suspected,"Long domain, Multiple subdomains, High entropy"
-172.16.4.43,m2a2qkttta0t966znt2d01nlqan3eujdvkh69lbj23gfy0nw1o2tmyq0.example.com.,A,5,DNS Tunneling Suspected,"Long domain, Multiple subdomains, High entropy"
-172.16.4.43,m2a2qkttta0t966znt2d01nlqan3eujdvkh69lbj23gfy0nw1o2tmyq0.example.com.,AAAA,5,DNS Tunneling Suspected,"Long domain, Multiple subdomains, High entropy"
