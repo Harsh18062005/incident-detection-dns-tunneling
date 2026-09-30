@@ -5,7 +5,7 @@ def check_domain_length(domain_length):
 
 
 def check_subdomain_count(subdomain_count):
-    if subdomain_count >= 1:
+    if subdomain_count >= 2:
         return True
     return False
 
@@ -17,7 +17,7 @@ def check_entropy(entropy):
 
 
 def check_query_frequency(query_frequency):
-    if query_frequency <= 2:
+    if query_frequency >= 5:
         return True
     return False
 
@@ -55,6 +55,33 @@ def calculate_risk_score(
     return score
 
 
+def get_detection_reasons(
+    domain_length,
+    subdomain_count,
+    entropy,
+    query_frequency,
+    query_type
+):
+    reasons = []
+
+    if check_domain_length(domain_length):
+        reasons.append("Long domain")
+
+    if check_subdomain_count(subdomain_count):
+        reasons.append("Multiple subdomains")
+
+    if check_entropy(entropy):
+        reasons.append("High entropy")
+
+    if check_query_frequency(query_frequency):
+        reasons.append("High query frequency")
+
+    if check_query_type(query_type):
+        reasons.append("TXT query")
+
+    return reasons
+
+
 def detect_dns_tunneling(
     domain_length,
     subdomain_count,
@@ -74,5 +101,3 @@ def detect_dns_tunneling(
         return True, risk_score
 
     return False, risk_score
-
-

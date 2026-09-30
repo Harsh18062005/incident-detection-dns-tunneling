@@ -1,4 +1,7 @@
-from detection.detection_engine import detect_dns_tunneling
+from detection.detection_engine import (
+    detect_dns_tunneling,
+    get_detection_reasons
+)
 
 
 def detect_live_dns(df):
@@ -15,9 +18,18 @@ def detect_live_dns(df):
             row["query_type_feature"]
         )
 
+        reasons = get_detection_reasons(
+            row["domain_length"],
+            row["subdomain_count"],
+            row["entropy"],
+            row["query_frequency"],
+            row["query_type_feature"]
+        )
+
         results.append({
             "is_suspicious": is_suspicious,
-            "risk_score": risk_score
+            "risk_score": risk_score,
+            "detection_reasons": ", ".join(reasons)
         })
 
     df["is_suspicious"] = [
@@ -26,6 +38,10 @@ def detect_live_dns(df):
 
     df["risk_score"] = [
         result["risk_score"] for result in results
+    ]
+
+    df["detection_reasons"] = [
+        result["detection_reasons"] for result in results
     ]
 
     return df
