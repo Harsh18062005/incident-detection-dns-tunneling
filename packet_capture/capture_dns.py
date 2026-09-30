@@ -3,6 +3,7 @@ import pandas as pd
 
 from detection.live_feature_pipeline import extract_live_features
 from detection.live_detection_pipeline import detect_live_dns
+from detection.alert_generator import generate_alerts_from_dataframe
 
 
 print("Starting DNS packet capture...")
@@ -73,16 +74,16 @@ if not df.empty:
     print("\nLive DNS Data:")
     print(df)
 
-    # Extract features
+    # Extract DNS features
     df = extract_live_features(df)
 
     print("\nLive DNS Features:")
     print(df)
 
-    # Run detection
+    # Run DNS detection
     df = detect_live_dns(df)
 
-    # Display clear detection results
+    # Display detection results
     print("\nLive DNS Detection Results:")
 
     print(
@@ -95,6 +96,16 @@ if not df.empty:
             ]
         ].to_string(index=False)
     )
+
+    # Generate alerts for suspicious live DNS traffic
+    live_alerts = generate_alerts_from_dataframe(df)
+
+    print("\nLive DNS Alerts:")
+
+    if not live_alerts.empty:
+        print(live_alerts.to_string(index=False))
+    else:
+        print("No suspicious DNS alerts generated.")
 
 else:
 

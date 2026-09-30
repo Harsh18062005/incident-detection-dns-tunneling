@@ -10,7 +10,7 @@ def generate_alert(
     risk_score,
     detection_reasons
 ):
-    alert = {
+    return {
         "source_ip": source_ip,
         "query": query,
         "query_type": query_type,
@@ -19,43 +19,56 @@ def generate_alert(
         "detection_reasons": ", ".join(detection_reasons)
     }
 
-    return alert
+
+def generate_alerts_from_dataframe(df):
+
+    alerts = []
+
+    for _, row in df.iterrows():
+
+        if row["is_suspicious"]:
+
+            reasons = get_detection_reasons(
+                row["domain_length"],
+                row["subdomain_count"],
+                row["entropy"],
+                row["query_frequency"],
+                row["query_type_feature"]
+            )
+
+            alert = generate_alert(
+                row["source_ip"],
+                row["query"],
+                row["query_type"],
+                row["risk_score"],
+                reasons
+            )
+
+            alerts.append(alert)
+
+    return pd.DataFrame(alerts)
 
 
-# Load detection results
-df = pd.read_csv("data/detection_results.csv")
+def generate_synthetic_alerts():
 
-alerts = []
+    df = pd.read_csv("data/detection_results.csv")
 
-for _, row in df.iterrows():
+    alerts_df = generate_alerts_from_dataframe(df)
 
-    if row["is_suspicious"]:
+    alerts_df.to_csv(
+        "data/alerts.csv",
+        index=False
+    )
 
-        reasons = get_detection_reasons(
-            row["domain_length"],
-            row["subdomain_count"],
-            row["entropy"],
-            row["query_frequency"],
-            row["query_type_feature"]
-        )
+    print("Alerts generated:", len(alerts_df))
 
-        alert = generate_alert(
-            row["source_ip"],
-            row["query"],
-            row["query_type"],
-            row["risk_score"],
-            reasons
-        )
+    print("\nGenerated Alerts:")
 
-        alerts.append(alert)
+    if not alerts_df.empty:
+        print(alerts_df.to_string(index=False))
+    else:
+        print("No suspicious DNS traffic detected.")
 
 
-# Create alerts DataFrame
-alerts_df = pd.DataFrame(alerts)
-
-# Save alerts
-alerts_df.to_csv("data/alerts.csv", index=False)
-
-print("Alerts generated:", len(alerts_df))
-print("\nGenerated Alerts:")
-print(alerts_df.to_string(index=False))
+if __name__ == "__main__":
+    generate_synthetic_alerts()
