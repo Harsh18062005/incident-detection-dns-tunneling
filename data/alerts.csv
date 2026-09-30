@@ -1,21 +1,21 @@
-source_ip,query,query_type,risk_score,alert
-192.168.1.10,23iy0q3lz5srcnda1vl42tjggyc5gvi66p3.example.com,TXT,5,DNS Tunneling Suspected
-192.168.1.7,m2a2qkttta0t966znt2d01nlqan3eujdvkh69lbj23gfy0nw1o2tmyq0.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.7,fgi4tfmz1o4k9vcobd2hc3cdv1jq8k31bflojjhfqlanzh1j64iryo333aai3rf.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.3,f0ub8anfgmhrpn809crchgeagb9ovu7bnbc.example.com,TXT,5,DNS Tunneling Suspected
-192.168.1.9,4nnsesda4mciqzv71z01ucatbf0ud7hga6vi5ml6z5weizo3kkdqa.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.5,hi1v7uvbjka9bcv0nip9nurvqiyj204wd5n7ngl.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.10,335bb24e17lnfkr1yns60cdjstpnxd8f6ht4g7yt50xvsl7o6neqzky0lg79y93ss.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.5,ne638vhyvfeoowco1go0cmz9pkjxt4tuam87c2mvyp4kyey.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.6,2foauhsp9rmeiufuce05haa1klflbo7nq3sswmxcdyfg31w7telz5vgll.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.3,varb8rl3bh772c80cv7f0za5wgkw5fsxprbmv0qbr.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.10,0nysgzmkjfyb19u2vk1kpsngh7azuccg18cido9dx3x72lv9iy0y4wbkyvkszxt8.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.3,2h1ma7wrx18iiy3codzyh2bh4dq9jxlhi9xwkuxy0xfi3c1x02jza9mj3p2vk.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.3,plcftio7qp4xwmw5ppp80md3ryrthi96ld891nz7p7.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.2,nsorp2bs1964d4gw8dduw8ew2t4idhff98zdr6l8ki4qeohuxoyddb0ax5d3w.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.8,ar009eq571ezraf25nr163lw522erfka95mk.example.com,TXT,5,DNS Tunneling Suspected
-192.168.1.2,173091l141w3ch2mn2xc65j6x3kvdi7i5q3p.example.com,TXT,5,DNS Tunneling Suspected
-192.168.1.3,j91alqwaluysufhky94br263ee0awtbpr74q98cx.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.4,zy284b0knib0gv5ovynffzoxub14phu9n44z4gwdi2u.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.5,h0zie9ipu5q4te7csh03or3rjeac14tvf4mbm9gusshk1qp.example.com,TXT,7,DNS Tunneling Suspected
-192.168.1.4,9l5z7axalrhmen0mm88xjd515kjab9vvjfe6mpff3jvyx.example.com,TXT,7,DNS Tunneling Suspected
+source_ip,query,query_type,risk_score,alert,detection_reasons
+192.168.1.10,23iy0q3lz5srcnda1vl42tjggyc5gvi66p3.example.com,TXT,5,DNS Tunneling Suspected,"High entropy, TXT query"
+192.168.1.7,m2a2qkttta0t966znt2d01nlqan3eujdvkh69lbj23gfy0nw1o2tmyq0.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.7,fgi4tfmz1o4k9vcobd2hc3cdv1jq8k31bflojjhfqlanzh1j64iryo333aai3rf.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.3,f0ub8anfgmhrpn809crchgeagb9ovu7bnbc.example.com,TXT,5,DNS Tunneling Suspected,"High entropy, TXT query"
+192.168.1.9,4nnsesda4mciqzv71z01ucatbf0ud7hga6vi5ml6z5weizo3kkdqa.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.5,hi1v7uvbjka9bcv0nip9nurvqiyj204wd5n7ngl.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.10,335bb24e17lnfkr1yns60cdjstpnxd8f6ht4g7yt50xvsl7o6neqzky0lg79y93ss.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.5,ne638vhyvfeoowco1go0cmz9pkjxt4tuam87c2mvyp4kyey.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.6,2foauhsp9rmeiufuce05haa1klflbo7nq3sswmxcdyfg31w7telz5vgll.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.3,varb8rl3bh772c80cv7f0za5wgkw5fsxprbmv0qbr.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.10,0nysgzmkjfyb19u2vk1kpsngh7azuccg18cido9dx3x72lv9iy0y4wbkyvkszxt8.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.3,2h1ma7wrx18iiy3codzyh2bh4dq9jxlhi9xwkuxy0xfi3c1x02jza9mj3p2vk.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.3,plcftio7qp4xwmw5ppp80md3ryrthi96ld891nz7p7.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.2,nsorp2bs1964d4gw8dduw8ew2t4idhff98zdr6l8ki4qeohuxoyddb0ax5d3w.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.8,ar009eq571ezraf25nr163lw522erfka95mk.example.com,TXT,5,DNS Tunneling Suspected,"High entropy, TXT query"
+192.168.1.2,173091l141w3ch2mn2xc65j6x3kvdi7i5q3p.example.com,TXT,5,DNS Tunneling Suspected,"High entropy, TXT query"
+192.168.1.3,j91alqwaluysufhky94br263ee0awtbpr74q98cx.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.4,zy284b0knib0gv5ovynffzoxub14phu9n44z4gwdi2u.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.5,h0zie9ipu5q4te7csh03or3rjeac14tvf4mbm9gusshk1qp.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
+192.168.1.4,9l5z7axalrhmen0mm88xjd515kjab9vvjfe6mpff3jvyx.example.com,TXT,7,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
