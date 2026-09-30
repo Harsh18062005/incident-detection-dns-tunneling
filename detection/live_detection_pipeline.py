@@ -26,9 +26,12 @@ def detect_live_dns(df):
             row["query_type_feature"]
         )
 
+        status = "SUSPICIOUS" if is_suspicious else "NORMAL"
+
         results.append({
             "is_suspicious": is_suspicious,
             "risk_score": risk_score,
+            "status": status,
             "detection_reasons": ", ".join(reasons)
         })
 
@@ -38,6 +41,10 @@ def detect_live_dns(df):
 
     df["risk_score"] = [
         result["risk_score"] for result in results
+    ]
+
+    df["status"] = [
+        result["status"] for result in results
     ]
 
     df["detection_reasons"] = [

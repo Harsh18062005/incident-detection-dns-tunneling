@@ -45,12 +45,14 @@ def process_packet(packet):
     return None
 
 
+# Capture DNS packets
 packets = sniff(
     filter="udp port 53",
     count=5
 )
 
 
+# Process captured packets
 dns_records = []
 
 for packet in packets:
@@ -61,33 +63,37 @@ for packet in packets:
         dns_records.append(record)
 
 
+# Convert captured data to DataFrame
 df = pd.DataFrame(dns_records)
 
 
 if not df.empty:
 
+    # Display live DNS data
     print("\nLive DNS Data:")
     print(df)
 
+    # Extract features
     df = extract_live_features(df)
 
     print("\nLive DNS Features:")
     print(df)
 
+    # Run detection
     df = detect_live_dns(df)
 
+    # Display clear detection results
     print("\nLive DNS Detection Results:")
+
     print(
         df[
             [
-                "source_ip",
                 "query",
-                "query_type",
-                "is_suspicious",
+                "status",
                 "risk_score",
                 "detection_reasons"
             ]
-        ]
+        ].to_string(index=False)
     )
 
 else:
