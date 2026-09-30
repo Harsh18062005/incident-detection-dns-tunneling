@@ -1,4 +1,4 @@
-from scapy.all import sniff, DNS, DNSQR, IP
+from scapy.all import sniff, DNS, DNSQR, IP, IPv6
 import pandas as pd
 
 from detection.live_feature_pipeline import extract_live_features
@@ -14,7 +14,10 @@ def process_packet(packet):
     if (
         packet.haslayer(DNS)
         and packet.haslayer(DNSQR)
-        and packet.haslayer(IP)
+        and (
+            packet.haslayer(IP)
+            or packet.haslayer(IPv6)
+        )
         and packet[DNS].qr == 0
     ):
 
@@ -37,8 +40,17 @@ def process_packet(packet):
             str(packet[DNSQR].qtype)
         )
 
+        # Get source IP address
+        if packet.haslayer(IP):
+
+            source_ip = packet[IP].src
+
+        else:
+
+            source_ip = packet[IPv6].src
+
         return {
-            "source_ip": packet[IP].src,
+            "source_ip": source_ip,
             "query": query,
             "query_type": query_type
         }
@@ -46,14 +58,20 @@ def process_packet(packet):
     return None
 
 
-# Capture DNS packets
+# ============================================================
+# CAPTURE DNS PACKETS
+# ============================================================
+
 packets = sniff(
-    filter="udp port 53",
-    count=5
+    filter="udp port 53 or tcp port 53",
+    count=50
 )
 
 
-# Process captured packets
+# ============================================================
+# PROCESS CAPTURED PACKETS
+# ============================================================
+
 dns_records = []
 
 for packet in packets:
@@ -64,7 +82,10 @@ for packet in packets:
         dns_records.append(record)
 
 
-# Convert captured data to DataFrame
+# ============================================================
+# PROCESS DNS DATA
+# ============================================================
+
 df = pd.DataFrame(dns_records)
 
 
@@ -74,16 +95,27 @@ if not df.empty:
     print("\nLive DNS Data:")
     print(df)
 
-    # Extract DNS features
+    # Save ALL live DNS queries
+    df.to_csv(
+        "data/live_dns.csv",
+        index=False
+    )
+
+    # ========================================================
+    # FEATURE EXTRACTION
+    # ========================================================
+
     df = extract_live_features(df)
 
     print("\nLive DNS Features:")
     print(df)
 
-    # Run DNS detection
+    # ========================================================
+    # DNS DETECTION
+    # ========================================================
+
     df = detect_live_dns(df)
 
-    # Display detection results
     print("\nLive DNS Detection Results:")
 
     print(
@@ -97,10 +129,13 @@ if not df.empty:
         ].to_string(index=False)
     )
 
-    # Generate alerts for suspicious live DNS traffic
+    # ========================================================
+    # ALERT GENERATION
+    # ========================================================
+
     live_alerts = generate_alerts_from_dataframe(df)
 
-    # Save live alerts separately
+    # Save suspicious live alerts
     live_alerts.to_csv(
         "data/live_alerts.csv",
         index=False
@@ -121,14 +156,28 @@ if not df.empty:
     else:
 
         print("No suspicious DNS alerts generated.")
+        print("Live alerts saved: 0")
 
-        print(
-            "Live alerts saved: 0"
-        )
 
 else:
 
-    # Create an empty live alerts file
+    # ========================================================
+    # NO DNS PACKETS CAPTURED
+    # ========================================================
+
+    empty_live_dns = pd.DataFrame(
+        columns=[
+            "source_ip",
+            "query",
+            "query_type"
+        ]
+    )
+
+    empty_live_dns.to_csv(
+        "data/live_dns.csv",
+        index=False
+    )
+
     empty_alerts = pd.DataFrame(
         columns=[
             "source_ip",
