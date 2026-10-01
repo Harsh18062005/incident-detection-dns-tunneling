@@ -2,483 +2,463 @@ import streamlit as st
 import pandas as pd
 
 
-# ============================================================
+# ---------------------------------------------------------
 # PAGE CONFIGURATION
-# ============================================================
+# ---------------------------------------------------------
 
 st.set_page_config(
     page_title="DNS Tunneling Detection",
     page_icon="🛡️",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+    layout="wide"
 )
 
 
-# ============================================================
+# ---------------------------------------------------------
 # CUSTOM CSS
-# ============================================================
+# ---------------------------------------------------------
 
 st.markdown(
     """
-<style>
+    <style>
 
-/* Main application container */
-[data-testid="stAppViewContainer"] {
-    width: 100%;
-}
-
-/* Main content area */
-[data-testid="stMainBlockContainer"] {
-    max-width: 100%;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-}
-
-/* Fallback for older Streamlit versions */
-.block-container {
-    max-width: 100%;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-}
-
-/* Metrics */
-div[data-testid="stMetric"] {
-    border: 1px solid rgba(128, 128, 128, 0.25);
-    border-radius: 12px;
-    padding: 1rem;
-    min-height: 105px;
-    background: rgba(128, 128, 128, 0.06);
-}
-
-/* Metric values */
-div[data-testid="stMetricValue"] {
-    font-size: 1.8rem;
-    font-weight: 700;
-}
-
-/* Dataframes */
-div[data-testid="stDataFrame"] {
-    width: 100%;
-    border-radius: 10px;
-}
-
-/* Radio buttons */
-div[data-testid="stRadio"] {
-    margin-bottom: 1rem;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-
-    [data-testid="stMainBlockContainer"],
-    .block-container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+    .main {
         padding-top: 1rem;
     }
 
-    div[data-testid="stMetric"] {
-        min-height: 90px;
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
     }
 
-    div[data-testid="stMetricValue"] {
-        font-size: 1.4rem;
+    .metric-card {
+        padding: 18px;
+        border-radius: 12px;
+        background-color: #111827;
+        border: 1px solid #263244;
+        text-align: center;
     }
 
-}
+    .metric-title {
+        font-size: 14px;
+        color: #9ca3af;
+        margin-bottom: 5px;
+    }
 
-</style>
-""",
+    .metric-value {
+        font-size: 30px;
+        font-weight: 700;
+        color: #22d3ee;
+    }
+
+    .status-normal {
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #10251c;
+        border: 1px solid #245b43;
+        color: #7ee2ad;
+        margin-bottom: 15px;
+    }
+
+    .status-alert {
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #30151a;
+        border: 1px solid #71313a;
+        color: #ff9b9b;
+        margin-bottom: 15px;
+    }
+
+    .footer {
+        margin-top: 40px;
+        padding-top: 15px;
+        border-top: 1px solid #263244;
+        text-align: left;
+        color: #8b949e;
+        font-size: 12px;
+    }
+
+    @media (max-width: 900px) {
+        .block-container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+    }
+
+    </style>
+    """,
     unsafe_allow_html=True
 )
 
 
-# ============================================================
-# HEADER
-# ============================================================
+# ---------------------------------------------------------
+# TITLE
+# ---------------------------------------------------------
 
-st.title("🛡️ DNS Tunneling Detection Dashboard")
+st.title("🛡️ DNS Tunneling Detection")
 
 st.caption(
-    "Real-time DNS traffic monitoring, risk analysis and "
-    "suspicious DNS tunneling detection"
+    "Rule-Based DNS Traffic Analysis and Explainable Alerting"
 )
 
 
-# ============================================================
+# ---------------------------------------------------------
 # MONITORING MODE
-# ============================================================
-
-st.subheader("Monitoring Mode")
+# ---------------------------------------------------------
 
 mode = st.radio(
-    "Select monitoring mode",
+    "Monitoring Mode",
     [
         "Live DNS Monitoring",
         "Synthetic Dataset Testing"
     ],
-    horizontal=True,
-    label_visibility="collapsed"
+    horizontal=True
 )
 
 
-# ============================================================
-# LIVE DNS MONITORING
-# ============================================================
+# ---------------------------------------------------------
+# FILE PATHS
+# ---------------------------------------------------------
 
 if mode == "Live DNS Monitoring":
 
-    st.header("📡 Live DNS Monitoring")
-
-    # --------------------------------------------------------
-    # LOAD LIVE DNS DATA
-    # --------------------------------------------------------
-
-    try:
-        live_dns = pd.read_csv(
-            "data/live_dns.csv"
-        )
-    except (FileNotFoundError, pd.errors.EmptyDataError):
-        live_dns = pd.DataFrame()
-
-    # --------------------------------------------------------
-    # LOAD LIVE ALERTS
-    # --------------------------------------------------------
-
-    try:
-        live_alerts = pd.read_csv(
-            "data/live_alerts.csv"
-        )
-    except (FileNotFoundError, pd.errors.EmptyDataError):
-        live_alerts = pd.DataFrame()
-
-    # --------------------------------------------------------
-    # CALCULATE METRICS
-    # --------------------------------------------------------
-
-    total_queries = len(live_dns)
-    total_alerts = len(live_alerts)
-
-    if total_queries > 0:
-
-        suspicious_percentage = (
-            total_alerts / total_queries
-        ) * 100
-
-    else:
-
-        suspicious_percentage = 0
-
-    if not live_alerts.empty:
-
-        highest_risk = live_alerts["risk_score"].max()
-
-    else:
-
-        highest_risk = 0
-
-    # --------------------------------------------------------
-    # METRIC CARDS
-    # --------------------------------------------------------
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    col1.metric(
-        "Total DNS Queries",
-        total_queries
-    )
-
-    col2.metric(
-        "Tunneling Alerts",
-        total_alerts
-    )
-
-    col3.metric(
-        "Suspicious Traffic",
-        f"{suspicious_percentage:.1f}%"
-    )
-
-    col4.metric(
-        "Highest Risk Score",
-        highest_risk
-    )
-
-    # --------------------------------------------------------
-    # STATUS
-    # --------------------------------------------------------
-
-    if total_queries == 0:
-
-        st.info(
-            "No DNS traffic was captured in the latest "
-            "monitoring session."
-        )
-
-    elif total_alerts == 0:
-
-        st.success(
-            "No suspicious DNS traffic detected in the "
-            "latest live capture."
-        )
-
-    else:
-
-        st.warning(
-            f"{total_alerts} suspicious DNS query(s) "
-            "detected in the latest capture."
-        )
-
-    # --------------------------------------------------------
-    # LIVE DNS QUERIES
-    # --------------------------------------------------------
-
-    st.subheader("🌐 Live DNS Queries")
-
-    if not live_dns.empty:
-
-        display_live_dns = live_dns[
-            [
-                "source_ip",
-                "query",
-                "query_type"
-            ]
-        ]
-
-        st.dataframe(
-            display_live_dns,
-            use_container_width=True,
-            hide_index=True,
-            height=350
-        )
-
-    else:
-
-        st.info(
-            "No live DNS queries available."
-        )
-
-    # --------------------------------------------------------
-    # LIVE ALERTS
-    # --------------------------------------------------------
-
-    if not live_alerts.empty:
-
-        st.subheader(
-            "🚨 DNS Tunneling Alerts"
-        )
-
-        display_alerts = live_alerts[
-            [
-                "source_ip",
-                "query",
-                "query_type",
-                "risk_score",
-                "alert",
-                "detection_reasons"
-            ]
-        ]
-
-        st.dataframe(
-            display_alerts,
-            use_container_width=True,
-            hide_index=True,
-            height=280
-        )
-
-        # ----------------------------------------------------
-        # SOURCE IP CHART
-        # ----------------------------------------------------
-
-        st.subheader(
-            "📊 Suspicious Queries by Source IP"
-        )
-
-        live_ip_counts = (
-            live_alerts["source_ip"]
-            .value_counts()
-            .rename("Alerts")
-        )
-
-        st.bar_chart(
-            live_ip_counts,
-            use_container_width=True
-        )
-
-
-# ============================================================
-# SYNTHETIC DATASET TESTING
-# ============================================================
+    dns_file = "data/live_dns.csv"
+    alerts_file = "data/live_alerts.csv"
 
 else:
 
-    st.header("🧪 Synthetic Dataset Testing")
+    dns_file = "data/dns_traffic.csv"
+    alerts_file = "data/alerts.csv"
 
-    # --------------------------------------------------------
-    # LOAD SYNTHETIC DNS DATA
-    # --------------------------------------------------------
 
-    try:
+# ---------------------------------------------------------
+# LOAD DNS DATA
+# ---------------------------------------------------------
 
-        dns_traffic = pd.read_csv(
-            "data/dns_traffic.csv"
-        )
+try:
+    dns_df = pd.read_csv(dns_file)
+except FileNotFoundError:
 
-    except (FileNotFoundError, pd.errors.EmptyDataError):
-
-        dns_traffic = pd.DataFrame()
-
-    # --------------------------------------------------------
-    # LOAD SYNTHETIC ALERTS
-    # --------------------------------------------------------
-
-    try:
-
-        alerts = pd.read_csv(
-            "data/alerts.csv"
-        )
-
-    except (FileNotFoundError, pd.errors.EmptyDataError):
-
-        alerts = pd.DataFrame()
-
-    # --------------------------------------------------------
-    # CALCULATE METRICS
-    # --------------------------------------------------------
-
-    total_queries = len(dns_traffic)
-    total_alerts = len(alerts)
-
-    if total_queries > 0:
-
-        suspicious_percentage = (
-            total_alerts / total_queries
-        ) * 100
-
-    else:
-
-        suspicious_percentage = 0
-
-    if not alerts.empty:
-
-        highest_risk = alerts["risk_score"].max()
-
-    else:
-
-        highest_risk = 0
-
-    # --------------------------------------------------------
-    # METRIC CARDS
-    # --------------------------------------------------------
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    col1.metric(
-        "Total DNS Queries",
-        total_queries
+    st.error(
+        f"DNS data file not found: `{dns_file}`"
     )
 
-    col2.metric(
-        "Tunneling Alerts",
-        total_alerts
-    )
+    st.stop()
 
-    col3.metric(
-        "Suspicious Traffic",
-        f"{suspicious_percentage:.1f}%"
-    )
 
-    col4.metric(
-        "Highest Risk Score",
-        highest_risk
-    )
+# ---------------------------------------------------------
+# LOAD ALERT DATA
+# ---------------------------------------------------------
 
-    # --------------------------------------------------------
-    # SYNTHETIC DNS TRAFFIC
-    # --------------------------------------------------------
+try:
+    alerts_df = pd.read_csv(alerts_file)
 
-    st.subheader(
-        "📄 Synthetic DNS Traffic"
-    )
+except FileNotFoundError:
 
-    if not dns_traffic.empty:
-
-        st.dataframe(
-            dns_traffic,
-            use_container_width=True,
-            hide_index=True,
-            height=400
-        )
-
-    else:
-
-        st.info(
-            "No synthetic DNS traffic available."
-        )
-
-    # --------------------------------------------------------
-    # SYNTHETIC ALERTS
-    # --------------------------------------------------------
-
-    st.subheader(
-        "🚨 Detected DNS Tunneling Alerts"
-    )
-
-    if not alerts.empty:
-
-        display_alerts = alerts[
-            [
-                "source_ip",
-                "query",
-                "query_type",
-                "risk_score",
-                "alert",
-                "detection_reasons"
-            ]
+    alerts_df = pd.DataFrame(
+        columns=[
+            "source_ip",
+            "query",
+            "query_type",
+            "risk_score",
+            "alert",
+            "detection_reasons"
         ]
+    )
+
+
+# ---------------------------------------------------------
+# BASIC DATA CLEANING
+# ---------------------------------------------------------
+
+if "risk_score" in alerts_df.columns:
+
+    alerts_df["risk_score"] = pd.to_numeric(
+        alerts_df["risk_score"],
+        errors="coerce"
+    ).fillna(0)
+
+if "risk_score" in dns_df.columns:
+
+    dns_df["risk_score"] = pd.to_numeric(
+        dns_df["risk_score"],
+        errors="coerce"
+    ).fillna(0)
+
+
+# ---------------------------------------------------------
+# METRICS
+# ---------------------------------------------------------
+
+total_queries = len(dns_df)
+
+total_alerts = len(alerts_df)
+
+if total_queries > 0:
+
+    suspicious_percentage = (
+        total_alerts / total_queries
+    ) * 100
+
+else:
+
+    suspicious_percentage = 0
+
+
+if not alerts_df.empty and "risk_score" in alerts_df.columns:
+
+    highest_risk = int(
+        alerts_df["risk_score"].max()
+    )
+
+else:
+
+    highest_risk = 0
+
+
+# ---------------------------------------------------------
+# KPI CARDS
+# ---------------------------------------------------------
+
+col1, col2, col3, col4 = st.columns(4)
+
+
+with col1:
+
+    st.markdown(
+        f"""
+        <div class="metric-card">
+            <div class="metric-title">
+                TOTAL DNS QUERIES
+            </div>
+            <div class="metric-value">
+                {total_queries}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+with col2:
+
+    st.markdown(
+        f"""
+        <div class="metric-card">
+            <div class="metric-title">
+                TUNNELING ALERTS
+            </div>
+            <div class="metric-value">
+                {total_alerts}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+with col3:
+
+    st.markdown(
+        f"""
+        <div class="metric-card">
+            <div class="metric-title">
+                SUSPICIOUS TRAFFIC
+            </div>
+            <div class="metric-value">
+                {suspicious_percentage:.1f}%
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+with col4:
+
+    st.markdown(
+        f"""
+        <div class="metric-card">
+            <div class="metric-title">
+                HIGHEST RISK SCORE
+            </div>
+            <div class="metric-value">
+                {highest_risk}/7
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+# ---------------------------------------------------------
+# STATUS
+# ---------------------------------------------------------
+
+if total_alerts > 0:
+
+    st.markdown(
+        f"""
+        <div class="status-alert">
+            ⚠️ <b>{total_alerts}</b> suspicious DNS
+            alert(s) detected.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+else:
+
+    st.markdown(
+        """
+        <div class="status-normal">
+            ✓ No suspicious DNS tunneling alerts detected.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+# ---------------------------------------------------------
+# DNS TRAFFIC TABLE
+# ---------------------------------------------------------
+
+st.subheader("📡 DNS Traffic")
+
+if not dns_df.empty:
+
+    display_columns = [
+        column
+        for column in [
+            "source_ip",
+            "query",
+            "query_type",
+            "domain_length",
+            "subdomain_count",
+            "entropy",
+            "query_frequency",
+            "risk_score",
+            "status"
+        ]
+        if column in dns_df.columns
+    ]
+
+    if display_columns:
 
         st.dataframe(
-            display_alerts,
+            dns_df[display_columns],
             use_container_width=True,
-            hide_index=True,
-            height=350
-        )
-
-        # ----------------------------------------------------
-        # SOURCE IP CHART
-        # ----------------------------------------------------
-
-        st.subheader(
-            "📊 Suspicious Queries by Source IP"
-        )
-
-        ip_counts = (
-            alerts["source_ip"]
-            .value_counts()
-            .rename("Alerts")
-        )
-
-        st.bar_chart(
-            ip_counts,
-            use_container_width=True
+            hide_index=True
         )
 
     else:
 
-        st.info(
-            "No suspicious DNS traffic detected."
+        st.dataframe(
+            dns_df,
+            use_container_width=True,
+            hide_index=True
         )
 
+else:
 
-# ============================================================
+    st.info("No DNS traffic data available.")
+
+
+# ---------------------------------------------------------
+# ALERT TABLE
+# ---------------------------------------------------------
+
+st.subheader("🚨 DNS Tunneling Alerts")
+
+if not alerts_df.empty:
+
+    alert_columns = [
+        column
+        for column in [
+            "source_ip",
+            "query",
+            "query_type",
+            "risk_score",
+            "alert",
+            "detection_reasons"
+        ]
+        if column in alerts_df.columns
+    ]
+
+    st.dataframe(
+        alerts_df[alert_columns],
+        use_container_width=True,
+        hide_index=True
+    )
+
+else:
+
+    st.info("No suspicious DNS alerts available.")
+
+
+# ---------------------------------------------------------
+# SOURCE IP ANALYSIS
+# ---------------------------------------------------------
+
+st.subheader("📊 Suspicious Queries by Source IP")
+
+if (
+    not alerts_df.empty
+    and "source_ip" in alerts_df.columns
+):
+
+    source_counts = (
+        alerts_df["source_ip"]
+        .value_counts()
+        .rename("Suspicious Queries")
+    )
+
+    st.bar_chart(
+        source_counts,
+        use_container_width=True
+    )
+
+else:
+
+    st.info(
+        "No suspicious source IP activity to display."
+    )
+
+
+# ---------------------------------------------------------
+# RISK SCORE DISTRIBUTION
+# ---------------------------------------------------------
+
+if (
+    not alerts_df.empty
+    and "risk_score" in alerts_df.columns
+):
+
+    st.subheader("📈 Risk Score Distribution")
+
+    risk_counts = (
+        alerts_df["risk_score"]
+        .value_counts()
+        .sort_index()
+        .rename("Alerts")
+    )
+
+    st.bar_chart(
+        risk_counts,
+        use_container_width=True
+    )
+
+
+# ---------------------------------------------------------
 # FOOTER
-# ============================================================
+# ---------------------------------------------------------
 
-st.divider()
-
-st.caption(
-    "DNS Tunneling Detection System • HCL Project"
+st.markdown(
+    """
+    <div class="footer">
+        DNS Tunneling Detection System • B.Tech Project
+    </div>
+    """,
+    unsafe_allow_html=True
 )
