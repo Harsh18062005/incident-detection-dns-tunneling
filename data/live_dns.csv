@@ -1,43 +1,31 @@
-source_ip,query,query_type
-172.16.12.101,blogs.opentext.com.,A
-172.16.12.101,mobile.events.data.microsoft.com.,A
-172.16.12.101,bronver.co.uk.,A
-172.16.12.101,bronver.co.uk.,A
-172.16.12.101,cdn04.humeysha.com.,AAAA
-172.16.12.101,cdn04.humeysha.com.,A
-172.16.12.101,cdn.wattloom.com.,AAAA
-172.16.12.101,cdn.wattloom.com.,A
-172.16.12.101,backorder-cdn-v3.grit.software.,A
-172.16.12.101,backorder-cdn-v3.grit.software.,A
-172.16.12.101,cdn01.humeysha.com.,A
-172.16.12.101,cdn02.humeysha.com.,A
-172.16.12.101,cdn03.humeysha.com.,A
-172.16.12.101,cdn04.humeysha.com.,A
-172.16.12.101,cdn01.humeysha.com.,A
-172.16.12.101,cdn02.humeysha.com.,A
-172.16.12.101,cdn03.humeysha.com.,A
-172.16.12.101,cdn04.humeysha.com.,A
-172.16.12.101,cdn01.humeysha.com.,A
-172.16.12.101,cdn02.humeysha.com.,A
-172.16.12.101,cdn03.humeysha.com.,A
-172.16.12.101,cdn04.humeysha.com.,A
-172.16.12.101,cdn01.humeysha.com.,A
-172.16.12.101,cdn02.humeysha.com.,A
-172.16.12.101,cdn03.humeysha.com.,A
-172.16.12.101,cdn04.humeysha.com.,A
-172.16.12.101,cdn01.humeysha.com.,A
-172.16.12.101,cdn02.humeysha.com.,A
-172.16.12.101,cdn03.humeysha.com.,A
-172.16.12.101,cdn04.humeysha.com.,A
-172.16.12.101,cdn01.humeysha.com.,A
-172.16.12.101,cdn02.humeysha.com.,A
-172.16.12.101,cdn03.humeysha.com.,A
-172.16.12.101,cdn04.humeysha.com.,A
-172.16.12.101,cdn01.humeysha.com.,A
-172.16.12.101,cdn02.humeysha.com.,A
-172.16.12.101,cdn03.humeysha.com.,A
-172.16.12.101,cdn04.humeysha.com.,A
-172.16.12.101,cdn01.humeysha.com.,A
-172.16.12.101,cdn02.humeysha.com.,A
-172.16.12.101,cdn03.humeysha.com.,A
-172.16.12.101,cdn04.humeysha.com.,A
+source_ip,query,query_type,domain_length,subdomain_count,entropy,query_frequency,query_type_feature,is_suspicious,risk_score,status,detection_reasons
+192.168.1.7,auth.github.com,A,15,1,3.373557262275186,2,A,False,0,NORMAL,
+192.168.1.18,cdn.openai.com,AAAA,14,1,3.2359263506290334,1,AAAA,False,0,NORMAL,
+192.168.1.24,github.com,CNAME,10,0,3.321928094887362,2,CNAME,False,0,NORMAL,
+192.168.1.3,dpmsfbu52o19mgqiyvwcyyg3zxz9q8eco1lv6amrnabt1i3wbc2c8tcp79c46qa.exfil-c2.net,TXT,76,1,4.932726895309358,1,TXT,True,5,SUSPICIOUS,"Long domain, High entropy, TXT query"
+192.168.1.3,auth.amazon.com,A,15,1,3.189898095464287,1,A,False,0,NORMAL,
+192.168.1.9,beacon-0gy4mqr20oyovgylaoldkefie4r44u.covert-channel.io,TXT,55,1,4.405928068220214,1,TXT,True,5,SUSPICIOUS,"Long domain, High entropy, TXT query"
+192.168.1.8,api.linkedin.com,A,16,1,3.452819531114783,1,A,False,0,NORMAL,
+192.168.1.41,streamlit.io,CNAME,12,0,3.251629167387823,1,CNAME,False,0,NORMAL,
+192.168.1.32,microsoft.com,A,13,0,3.0269868333592873,2,A,False,0,NORMAL,
+192.168.1.9,beacon-m0rkszwtn20bavgrmubaitea31rucn.covert-channel.io,TXT,55,1,4.408924377972586,1,TXT,True,5,SUSPICIOUS,"Long domain, High entropy, TXT query"
+192.168.1.9,microsoft.com,AAAA,13,0,3.0269868333592873,2,AAAA,False,0,NORMAL,
+192.168.1.4,i02hjwvxgi3za75xbnnenyzjjh1v42zv1bkl7p2uncdx63zzopiqm2whw2w1rvk.exfil-c2.net,TXT,76,1,4.856498487629711,1,TXT,True,5,SUSPICIOUS,"Long domain, High entropy, TXT query"
+192.168.1.48,github.com,A,10,0,3.321928094887362,2,A,False,0,NORMAL,
+192.168.1.46,assets.stackoverflow.com,AAAA,24,1,3.636842188131012,1,AAAA,False,2,NORMAL,High entropy
+192.168.1.33,netflix.com,MX,11,0,3.459431618637298,2,MX,False,0,NORMAL,
+192.168.1.43,linkedin.com,CNAME,12,0,3.2516291673878226,1,CNAME,False,0,NORMAL,
+192.168.1.32,docs.python.org,MX,15,1,3.4565647621309536,1,MX,False,0,NORMAL,
+192.168.1.15,cdn.github.com,AAAA,14,1,3.521640636343319,1,AAAA,False,2,NORMAL,High entropy
+192.168.1.9,ns7zsue61chckgzrsqv4.xlf2ax2zfrothstxqk4ldau5w.data-tunnel.org,TXT,62,2,4.6754186891748715,1,TXT,True,6,SUSPICIOUS,"Long domain, Multiple subdomains, High entropy, TXT query"
+192.168.1.5,pauiow9oyguug6v0t81x.a0uof9lns03txzc7bbxozhnty.data-tunnel.org,A,62,2,4.6663177389035795,1,A,True,5,SUSPICIOUS,"Long domain, Multiple subdomains, High entropy"
+192.168.1.3,login.youtube.com,A,17,1,3.572469458770136,1,A,False,2,NORMAL,High entropy
+192.168.1.16,openai.com,CNAME,10,0,3.121928094887362,1,CNAME,False,0,NORMAL,
+192.168.1.27,amazon.com,AAAA,10,0,2.721928094887362,1,AAAA,False,0,NORMAL,
+192.168.1.5,beacon-vvsrryhjk7wecl0lvhclzttt2ympi2.covert-channel.io,TXT,55,1,4.424465341104829,1,TXT,True,5,SUSPICIOUS,"Long domain, High entropy, TXT query"
+192.168.1.29,auth.github.com,AAAA,15,1,3.373557262275186,2,AAAA,False,0,NORMAL,
+192.168.1.16,api.slack.com,AAAA,13,1,3.238901256602631,1,AAAA,False,0,NORMAL,
+192.168.1.9,beacon-9nhulyoquyp0szc6xa05rcxnyhv63a.covert-channel.io,TXT,55,1,4.481651650699859,1,TXT,True,5,SUSPICIOUS,"Long domain, High entropy, TXT query"
+192.168.1.3,netflix.com,MX,11,0,3.459431618637298,2,MX,False,0,NORMAL,
+192.168.1.19,cdn.stackoverflow.com,MX,21,1,3.844232898763191,1,MX,False,2,NORMAL,High entropy
+192.168.1.2,stackoverflow.com,MX,17,0,3.6901165175936654,1,MX,False,2,NORMAL,High entropy
