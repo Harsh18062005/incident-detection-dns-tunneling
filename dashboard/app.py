@@ -22,75 +22,119 @@ from packet_capture.capture_dns import (
 # ---------------------------------------------------------
 
 st.set_page_config(
-    page_title="DNS Tunneling Detection",
+    page_title="DNS Tunneling Detection | Enterprise SOC",
     page_icon="🛡️",
     layout="wide"
 )
 
 
 # ---------------------------------------------------------
-# CUSTOM CSS
+# CORPORATE LIGHT THEME CUSTOM CSS
 # ---------------------------------------------------------
 
 st.markdown(
     """
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
 
     .main {
-        padding-top: 1rem;
+        background-color: #f8fafc;
     }
 
     .block-container {
-        padding-top: 2rem;
-        padding-bottom: 1rem;
+        padding-top: 1.8rem;
+        padding-bottom: 2rem;
         padding-left: 3rem;
         padding-right: 3rem;
     }
 
+    .enterprise-header {
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 16px;
+        margin-bottom: 22px;
+    }
+
+    .enterprise-badge {
+        display: inline-block;
+        padding: 3px 9px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        background-color: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+        margin-bottom: 8px;
+    }
+
     .metric-card {
-        padding: 18px;
-        border-radius: 12px;
-        background-color: #111827;
-        border: 1px solid #263244;
+        padding: 18px 14px;
+        border-radius: 8px;
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
         text-align: center;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .metric-card:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
+        border-color: #cbd5e1;
     }
 
     .metric-title {
-        font-size: 14px;
-        color: #9ca3af;
-        margin-bottom: 5px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: #64748b;
+        margin-bottom: 6px;
     }
 
     .metric-value {
-        font-size: 30px;
+        font-size: 28px;
         font-weight: 700;
-        color: #22d3ee;
+        color: #0f172a;
+        line-height: 1.2;
+    }
+
+    .metric-value-alert {
+        color: #b91c1c;
     }
 
     .status-normal {
-        padding: 10px;
+        padding: 12px 18px;
         border-radius: 8px;
-        background-color: #10251c;
-        border: 1px solid #245b43;
-        color: #7ee2ad;
-        margin-bottom: 15px;
+        background-color: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 20px;
     }
 
     .status-alert {
-        padding: 10px;
+        padding: 12px 18px;
         border-radius: 8px;
-        background-color: #30151a;
-        border: 1px solid #71313a;
-        color: #ff9b9b;
-        margin-bottom: 15px;
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 20px;
     }
 
     .footer {
-        margin-top: 40px;
-        padding-top: 15px;
-        border-top: 1px solid #263244;
+        margin-top: 48px;
+        padding-top: 16px;
+        border-top: 1px solid #e2e8f0;
         text-align: left;
-        color: #8b949e;
+        color: #64748b;
         font-size: 12px;
     }
 
@@ -108,13 +152,22 @@ st.markdown(
 
 
 # ---------------------------------------------------------
-# TITLE
+# CORPORATE HEADER
 # ---------------------------------------------------------
 
-st.title("🛡️ DNS Tunneling Detection")
-
-st.caption(
-    "Rule-Based DNS Traffic Analysis and Explainable Alerting"
+st.markdown(
+    """
+    <div class="enterprise-header">
+        <span class="enterprise-badge">Enterprise SOC</span>
+        <h1 style="margin: 0; font-size: 26px; font-weight: 700; color: #0f172a; letter-spacing: -0.02em;">
+            🛡️ DNS Tunneling Detection & Threat Intelligence
+        </h1>
+        <p style="margin: 4px 0 0 0; font-size: 13px; color: #64748b;">
+            Rule-Based DNS Traffic Inspection, Payload Entropy Analysis & Explainable Alerting
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
 
@@ -162,7 +215,7 @@ if mode == "Live DNS Monitoring":
 
         with tab1:
             st.markdown(
-                "<span style='color: #9ca3af; font-size: 13px;'>"
+                "<span style='color: #64748b; font-size: 13px;'>"
                 "Sniffs live DNS packets (UDP/TCP port 53) directly from the local system's network interface using Scapy. "
                 "(Requires local machine execution with Administrator/Npcap permissions)."
                 "</span>",
@@ -214,8 +267,8 @@ if mode == "Live DNS Monitoring":
 
         with tab2:
             st.markdown(
-                "<span style='color: #9ca3af; font-size: 13px;'>"
-                "Generates a realistic live stream of DNS queries (normal websites + DNS tunneling attack patterns) "
+                "<span style='color: #64748b; font-size: 13px;'>"
+                "Generates a realistic live stream of DNS queries (normal enterprise websites + DNS tunneling attack patterns) "
                 "and passes them directly into the live detection pipeline. "
                 "<b>Guaranteed to work 100% on deployed cloud environments.</b>"
                 "</span>",
@@ -256,7 +309,7 @@ if mode == "Live DNS Monitoring":
 
         with tab3:
             st.markdown(
-                "<span style='color: #9ca3af; font-size: 13px;'>"
+                "<span style='color: #64748b; font-size: 13px;'>"
                 "Upload a <code>.pcap</code> or <code>.pcapng</code> file captured from Wireshark on your system "
                 "to inspect your actual network packets on this deployed dashboard."
                 "</span>",
@@ -383,57 +436,44 @@ with col1:
     st.markdown(
         f"""
         <div class="metric-card">
-            <div class="metric-title">
-                TOTAL DNS QUERIES
-            </div>
-            <div class="metric-value">
-                {total_queries}
-            </div>
+            <div class="metric-title">TOTAL DNS QUERIES</div>
+            <div class="metric-value">{total_queries}</div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
 with col2:
+    alert_class = "metric-value-alert" if total_alerts > 0 else "metric-value"
     st.markdown(
         f"""
         <div class="metric-card">
-            <div class="metric-title">
-                TUNNELING ALERTS
-            </div>
-            <div class="metric-value">
-                {total_alerts}
-            </div>
+            <div class="metric-title">TUNNELING ALERTS</div>
+            <div class="metric-value {alert_class}">{total_alerts}</div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
 with col3:
+    pct_class = "metric-value-alert" if suspicious_percentage > 0 else "metric-value"
     st.markdown(
         f"""
         <div class="metric-card">
-            <div class="metric-title">
-                SUSPICIOUS TRAFFIC
-            </div>
-            <div class="metric-value">
-                {suspicious_percentage:.1f}%
-            </div>
+            <div class="metric-title">SUSPICIOUS TRAFFIC</div>
+            <div class="metric-value {pct_class}">{suspicious_percentage:.1f}%</div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
 with col4:
+    risk_class = "metric-value-alert" if highest_risk >= 4 else "metric-value"
     st.markdown(
         f"""
         <div class="metric-card">
-            <div class="metric-title">
-                HIGHEST RISK SCORE
-            </div>
-            <div class="metric-value">
-                {highest_risk}/7
-            </div>
+            <div class="metric-title">HIGHEST RISK SCORE</div>
+            <div class="metric-value {risk_class}">{highest_risk}/7</div>
         </div>
         """,
         unsafe_allow_html=True
@@ -448,7 +488,7 @@ if total_alerts > 0:
     st.markdown(
         f"""
         <div class="status-alert">
-            ⚠️ <b>{total_alerts}</b> suspicious DNS alert(s) detected.
+            ⚠️ <b>{total_alerts}</b> suspicious DNS tunneling alert(s) detected. Investigation recommended.
         </div>
         """,
         unsafe_allow_html=True
@@ -457,7 +497,7 @@ else:
     st.markdown(
         """
         <div class="status-normal">
-            ✓ No suspicious DNS tunneling alerts detected.
+            ✓ Normal DNS activity &bull; No active tunneling threats detected.
         </div>
         """,
         unsafe_allow_html=True
@@ -468,7 +508,7 @@ else:
 # DNS TRAFFIC TABLE
 # ---------------------------------------------------------
 
-st.subheader("📡 DNS Traffic")
+st.subheader("📡 DNS Traffic Log")
 
 if not dns_df.empty:
     display_columns = [
@@ -507,7 +547,7 @@ else:
 # ALERT TABLE
 # ---------------------------------------------------------
 
-st.subheader("🚨 DNS Tunneling Alerts")
+st.subheader("🚨 Incident Alerts")
 
 if not alerts_df.empty:
     alert_columns = [
@@ -536,7 +576,7 @@ else:
 # SOURCE IP ANALYSIS
 # ---------------------------------------------------------
 
-st.subheader("📊 Suspicious Queries by Source IP")
+st.subheader("📊 Threat Distribution by Source IP")
 
 if not alerts_df.empty and "source_ip" in alerts_df.columns:
     source_counts = (
@@ -557,7 +597,7 @@ else:
 # ---------------------------------------------------------
 
 if not alerts_df.empty and "risk_score" in alerts_df.columns:
-    st.subheader("📈 Risk Score Distribution")
+    st.subheader("📈 Risk Score Breakdown")
     risk_counts = (
         alerts_df["risk_score"]
         .value_counts()
@@ -577,7 +617,7 @@ if not alerts_df.empty and "risk_score" in alerts_df.columns:
 st.markdown(
     """
     <div class="footer">
-        DNS Tunneling Detection System • B.Tech Project
+        DNS Tunneling Detection System &bull; Enterprise Threat Monitoring & SOC Analytics
     </div>
     """,
     unsafe_allow_html=True
