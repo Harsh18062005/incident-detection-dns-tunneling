@@ -504,13 +504,39 @@ else:
     )
 
 
+def get_severity_label(score):
+    try:
+        val = float(score)
+        if val >= 6:
+            return "CRITICAL"
+        elif val >= 4:
+            return "HIGH"
+        elif val >= 2:
+            return "MEDIUM"
+        return "LOW"
+    except Exception:
+        return "INFO"
+
+
 # ---------------------------------------------------------
 # DNS TRAFFIC TABLE
 # ---------------------------------------------------------
 
-st.subheader("📡 DNS Traffic Log")
+col_dns_head, col_dns_dl = st.columns([3, 1])
+with col_dns_head:
+    st.subheader("📡 DNS Traffic Log")
 
 if not dns_df.empty:
+    with col_dns_dl:
+        csv_data = dns_df.to_csv(index=False).encode("utf-8")
+        st.download_button(
+            label="📥 Export Traffic (CSV)",
+            data=csv_data,
+            file_name="dns_traffic_log.csv",
+            mime="text/csv",
+            key="dl_dns_traffic"
+        )
+
     display_columns = [
         column
         for column in [
@@ -547,9 +573,24 @@ else:
 # ALERT TABLE
 # ---------------------------------------------------------
 
-st.subheader("🚨 Incident Alerts")
+col_alert_head, col_alert_dl = st.columns([3, 1])
+with col_alert_head:
+    st.subheader("🚨 Incident Alerts")
 
 if not alerts_df.empty:
+    if "severity" not in alerts_df.columns and "risk_score" in alerts_df.columns:
+        alerts_df["severity"] = alerts_df["risk_score"].apply(get_severity_label)
+
+    with col_alert_dl:
+        alerts_csv = alerts_df.to_csv(index=False).encode("utf-8")
+        st.download_button(
+            label="📥 Export Alerts (CSV)",
+            data=alerts_csv,
+            file_name="incident_alerts_report.csv",
+            mime="text/csv",
+            key="dl_alerts"
+        )
+
     alert_columns = [
         column
         for column in [
@@ -557,6 +598,7 @@ if not alerts_df.empty:
             "query",
             "query_type",
             "risk_score",
+            "severity",
             "alert",
             "detection_reasons"
         ]
