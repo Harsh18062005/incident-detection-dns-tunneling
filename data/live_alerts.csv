@@ -1,9 +1,1 @@
 source_ip,query,query_type,risk_score,alert,detection_reasons
-192.168.1.3,dpmsfbu52o19mgqiyvwcyyg3zxz9q8eco1lv6amrnabt1i3wbc2c8tcp79c46qa.exfil-c2.net,TXT,5,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
-192.168.1.9,beacon-0gy4mqr20oyovgylaoldkefie4r44u.covert-channel.io,TXT,5,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
-192.168.1.9,beacon-m0rkszwtn20bavgrmubaitea31rucn.covert-channel.io,TXT,5,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
-192.168.1.4,i02hjwvxgi3za75xbnnenyzjjh1v42zv1bkl7p2uncdx63zzopiqm2whw2w1rvk.exfil-c2.net,TXT,5,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
-192.168.1.9,ns7zsue61chckgzrsqv4.xlf2ax2zfrothstxqk4ldau5w.data-tunnel.org,TXT,6,DNS Tunneling Suspected,"Long domain, Multiple subdomains, High entropy, TXT query"
-192.168.1.5,pauiow9oyguug6v0t81x.a0uof9lns03txzc7bbxozhnty.data-tunnel.org,A,5,DNS Tunneling Suspected,"Long domain, Multiple subdomains, High entropy"
-192.168.1.5,beacon-vvsrryhjk7wecl0lvhclzttt2ympi2.covert-channel.io,TXT,5,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
-192.168.1.9,beacon-9nhulyoquyp0szc6xa05rcxnyhv63a.covert-channel.io,TXT,5,DNS Tunneling Suspected,"Long domain, High entropy, TXT query"
